@@ -1,2 +1,4 @@
 # DiffScaler
-Latetnt Diffusion Downscaling of weather reanalysis
+Latetnt Diffusion Downscaling of weather reanalysis.
+
+Code and Paper will be published here soon.
