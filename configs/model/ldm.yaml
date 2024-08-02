@@ -1,0 +1,66 @@
+_target_: src.models.ldm_module.LatentDiffusion
+parameterization: "v"
+
+denoiser:
+  _target_: src.models.components.ldm.denoiser.UNetModel
+  in_channels: 32
+  model_channels: 256
+  out_channels: 32
+  num_res_blocks: 2
+  attention_resolutions: [1, 2] # (1,2)
+  dims: 2
+  channel_mult: [1,2,4] # (1, 2, 4)
+  num_heads: 8
+  context_ch: [256,512,1024]
+
+# autoencoder: ${model.ae}
+
+# autoencoder:
+#   defaults:
+#     - ae.yaml
+
+# autoencoder: ae.yaml
+
+autoencoder: 
+  _target_: src.models.ae_module.AutoencoderKL
+  encoder:
+    _target_: src.models.components.ae.SimpleConvEncoder
+    levels: 3
+  decoder:
+    _target_: src.models.components.ae.SimpleConvDecoder
+    levels: 3
+  unet_regr:
+    _target_: src.models.unet_module.UnetLitModule
+    net:
+      _target_: src.models.components.unet.DownscalingUnet
+      in_ch: 32
+      out_ch: 1
+      features: [64,128,256,512]
+    loss: 
+      _target_: torch.nn.MSELoss
+      reduction: mean
+    optimizer: None
+  ae_flag: 'residual'
+
+context_encoder:
+  _target_: src.models.components.ldm.conditioner.AFNOConditionerNetCascade
+  autoencoder:
+    - _target_: src.models.ae_module.AutoencoderKL
+      encoder:
+        _target_: src.models.components.ae.SimpleConvEncoder
+        in_dim: 18
+        levels: 3
+        ch_mult: 3
+      decoder: None
+    - _target_: src.models.ae_module.EncoderLRES
+  train_autoenc: True
+  cascade_depth: 3
+  embed_dim: [128, 24]    # list length=nr of different inputs
+  analysis_depth: [4,4]   # nr of AFNO block in analysis
+  afno_fusion: True
+  input_size_ratios: [1,1] # (1,1)
+  embed_dim_out: 256
+
+lr: 1e-4
+
+ae_load_state_file: None

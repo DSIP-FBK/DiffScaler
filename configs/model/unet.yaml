@@ -1,0 +1,17 @@
+_target_: src.models.unet_module.UnetLitModule
+
+net:
+  _target_: src.models.components.unet.DownscalingUnet
+  in_ch: 32
+  out_ch: 1
+  features: [64,128,256,512]
+
+loss:
+  _target_: torch.nn.MSELoss
+  reduction: mean
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 0.0

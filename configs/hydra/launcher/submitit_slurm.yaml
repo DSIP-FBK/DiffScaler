@@ -1,0 +1,27 @@
+# @package hydra.launcher
+submitit_folder: ${hydra.sweep.dir}/submitit/%j
+timeout_min: 1440 # 24 hours, set to more if required; on dgx must be less than 48h
+cpus_per_task: 32
+gpus_per_node: null # Leave null
+tasks_per_node: 1 # If using ddp, this needs to be greater than or equal to the number of GPUs in each node
+mem_gb: 64
+nodes: 1
+name: ${hydra.job.name}
+_target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.SlurmLauncher
+partition: dgx_usr_prod
+qos: dgx_qos_sprod
+comment: null
+constraint: null # Leave null
+exclude: null # Leave null
+gres: "gpu:1" # The number of GPUs you require
+cpus_per_gpu: null # Leave null
+gpus_per_task: null # Leave null
+mem_per_gpu: null # Leave null
+mem_per_cpu: null # Leave null
+account: miara_20_0
+max_num_timeout: 0
+additional_parameters: { signal: SIGUSR1@90, requeue: true } # Only include this if you want to requeue your jobs
+array_parallelism: 10 # Idk what this does
+setup:
+    - echo "Hello World" # Put whatever commands you want to run before the job here
+    - rsync -ruP --stats /path/to/data/ /destination/path/on/node/ # To copy data with a progress bar

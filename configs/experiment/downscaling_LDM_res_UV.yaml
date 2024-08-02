@@ -1,0 +1,41 @@
+# @package _global_
+
+# to execute this experiment run:
+# python src/train.py experiment=downscaling_LDM_res_UV
+
+defaults:
+  - override /model: ldm.yaml
+  - override /logger: tensorboard.yaml
+  - override /trainer: gpu.yaml
+  
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["downscaling", "ldm_res_UV"]
+
+data:
+  target_vars:
+    high_res: ['U10','V10']
+  crop_size: 512
+  batch_size: 4
+  num_workers: 8
+  nn_lowres: False
+
+model:
+  denoiser:
+    in_channels: 64
+    out_channels: 64
+  autoencoder:
+    encoder:
+      in_dim: 2
+    decoder:
+      in_dim: 2
+    unet_regr:
+      net:
+        out_ch: 2
+      ckpt_path: ${paths.pretrained_models_dir}UNET_UV.ckpt
+  ae_load_state_file: ${paths.pretrained_models_dir}VAE_residual_UV.ckpt
+
+# # if we want to resume training from a checkpoint
+# ckpt_path: '/home/gabriele/Documents/fbk/icsc/downscaling-hydra/logs/train/runs/2023-12-29_15-55-26/checkpoints/last_updated_patience.ckpt'
+

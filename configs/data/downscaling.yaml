@@ -1,0 +1,36 @@
+_target_: src.data.downscaling_datamodule.DownscalingDataModule
+data_dir: ${paths.data_dir}
+static_vars:
+  dtm_tif_file: ${paths.data_dir}/static_var/dtm_2km_domain_trim_EPSG3035.tif
+  lc_tif_file: ${paths.data_dir}/static_var/land_cover_classes_2km_domain_trim_EPSG3035.tif
+  lat_tif_file: ${paths.data_dir}/static_var/lat_2km_domain_trim_EPSG3035.tif
+target_vars:
+  low_res: ['2mT','PMSL','U10','V10','dp2mT','SST','SNDPT','TP','SSRadIn','Q850','T850','U850','V850','W850']
+  high_res: null # mandatory list of high res target e.g. ['2mT'] or ['U10','V10']
+batch_size: 4
+num_workers: 8
+pin_memory: True
+
+# Available OPTIONS for target_vars:
+# low_res: 
+#     2mT         2-m temperature
+#     PMSL        Pressure mean sea level
+#     U10         10-m zonal wind speed
+#     V10         10-m meridional wind speed
+#     dp2mT       dew-point 2-m temperature
+#     SST         sea surface temperature
+#     SNDPT       snow depth
+#     TP          total precipitation
+#     SSRadIn     incoming surface solar raadiation    
+#     Q850        specific humidity 850hPa
+#     T850        temperature 850hPa
+#     U850        zonal wind speed 850hPa
+#     V850        meridional wind speed 850hPa
+#     W850        vertical wind speed
+# high_res:
+#     2mT         2-m temperature
+#     PMSL        Pressure mean sea level
+#     TP          total precipitation
+#     U10         10-m zonal wind speed
+#     V10         10-m meridional wind speed
+#     CC          cloud cover

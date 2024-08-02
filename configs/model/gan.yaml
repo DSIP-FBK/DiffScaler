@@ -1,0 +1,13 @@
+_target_: src.models.gan_module.UnetGANLitModule
+
+net:
+  _target_: src.models.components.unet.DownscalingUnet
+  in_ch: 32
+  out_ch: 1
+  features: [64,128,256,512]
+
+loss:
+  _target_: src.models.components.gan.PatchGANLoss
+  disc_start: 50000
+  disc_in_channels: ${model.net.out_ch}     # must match net out_ch
+

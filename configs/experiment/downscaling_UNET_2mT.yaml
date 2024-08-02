@@ -1,0 +1,22 @@
+# @package _global_
+
+# to execute this experiment run:
+# python src/train.py experiment=downscaling_UNET_2mT
+
+defaults:
+  - override /model: unet.yaml
+  - override /logger: tensorboard.yaml
+  - override /trainer: gpu.yaml
+  
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["downscaling", "unet_2mT"]
+
+data:
+  target_vars:
+    high_res: ['2mT']
+
+# # if we want to resume training from a checkpoint
+# ckpt_path: '/home/gabriele/Documents/fbk/icsc/downscaling-hydra/logs/train/runs/2024-01-23_13-27-40/checkpoints/last.ckpt'

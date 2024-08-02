@@ -1,0 +1,40 @@
+# @package _global_
+
+# to execute this experiment run:
+# python src/train.py experiment=downscaling_GAN_UV
+
+defaults:
+  - override /model: gan.yaml
+  - override /logger: tensorboard.yaml
+  - override /trainer: gpu.yaml
+  
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["downscaling", "gan_UV"]
+
+data:
+  target_vars:
+    high_res: ['U10','V10']
+
+model:
+  net:
+    out_ch: 2
+  loss:
+    disc_start: 50000
+
+callbacks:
+  model_checkpoint:
+    monitor: "val/rec_loss"
+
+  early_stopping:
+    monitor: "val/rec_loss"
+
+optimized_metric: val/rec_loss
+
+# # if we want to resume training from a checkpoint
+# model:
+#   ckpt_path: '/home/gabriele/Documents/fbk/icsc/downscaling-hydra/logs/train/runs/2023-11-02_10-59-22/checkpoints/epoch_034.ckpt'
+#   loss:
+#     disc_start: 0
