@@ -15,7 +15,7 @@
 
 LDM_res is a downscaling model based on a Latent Diffusion Model (LDM, used by e.g. [Stable Diffusion](https://github.com/CompVis/stable-diffusion)), developed to downscale meteorological variables from ERA5 reanalyses.
 
-We trained and tested LDM_res to produce 2-km fields of 2-m temperature and 10-m wind speed horizontal components starting from a list of predictors from ERA5 (interpolated @16km). The high-resolution reference truth data are provided by a dynamical downscaling performed with COSMO\_CLM ([VHR-REA IT](https://www.mdpi.com/2306-5729/6/8/88)). The model and its performance are presented and discussed in this [arXiv preprint](https://arxiv.org/abs/2406.13627).
+We trained and tested LDM_res to produce 2-km fields of 2-m temperature and 10-m wind speed horizontal components starting from a list of predictors from ERA5 (interpolated @16km). The high-resolution reference truth data are provided by a dynamical downscaling performed with COSMO\_CLM ([VHR-REA IT](https://www.mdpi.com/2306-5729/6/8/88)). The model and its performance are presented and discussed in this [GMD paper](https://doi.org/10.5194/gmd-18-2051-2025).
 
 This repository contains the code for testing and training LDM_res, all the baselines presented in the paper, and the code used to generate all the paper Figures.
 
